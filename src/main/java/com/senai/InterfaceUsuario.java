@@ -483,7 +483,7 @@ public class InterfaceUsuario {
             try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
                 stmt.setLong(1, cliente.getCpf());
                 stmt.setString(2, cliente.getNome());
-                stmt.setString(3, cliente.getEndereco());
+                stmt.setString(3, cliente.getSobrenome());
                 stmt.setString(4, cliente.getEndereco());
                 stmt.executeUpdate();
             }
