@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Gestao3.main:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Gestao3_main_jar</output-path>
+    <root id="archive" name="Gestao3.main.jar">
+      <element id="module-output" name="Gestao3.main" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mysql/mysql-connector-j/8.0.33/9e64d997873abc4318620264703d3fdb6b02dd5a/mysql-connector-j-8.0.33.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/3.21.9/ed1240d9231044ce6ccf1978512f6e44416bb7e7/protobuf-java-3.21.9.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
