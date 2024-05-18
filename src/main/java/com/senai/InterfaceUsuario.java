@@ -186,7 +186,7 @@ public class InterfaceUsuario {
 
     public void calcVMD() {
 
-
+        atualizarListaDeProdutos();
         if (listaDeProdutos.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Nenhum produto cadastrado!",
                     "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -267,6 +267,31 @@ public class InterfaceUsuario {
         }
     }
 
+
+    public void atualizarListaDeEmpresas() {
+        listaDeEmpresas.clear();
+
+        try (Connection conexao = banco.conectar()) {
+            Statement stmt = conexao.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM Empresa");
+
+            while (rs.next()) {
+                Empresa empresa = new Empresa();
+                empresa.setCnpj(rs.getInt("cnpj"));
+                empresa.setNome(rs.getString("nome_empresa"));
+                empresa.setEndereco(rs.getString("endereco_empresa"));
+                empresa.setTelefone(rs.getLong("telefone_empresa"));
+                listaDeEmpresas.add(empresa);
+            }
+
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public void cadastreUserCompanyEmployee() {
         int opt;
 
@@ -276,6 +301,8 @@ public class InterfaceUsuario {
                 null, option, null);
 
         if (opt == 0) {
+
+            atualizarListaDeEmpresas();
 
             if (listaDeEmpresas.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Nenhuma Empresa cadastrada!",
@@ -298,11 +325,6 @@ public class InterfaceUsuario {
                         "Informe o seu CPF:", "Cadastro",
                         JOptionPane.INFORMATION_MESSAGE));
                 funcionario.setCpf(cpf);
-
-                long nit = Long.parseLong(JOptionPane.showInputDialog(null,
-                        "Informe o seu NIT:", "Cadastro",
-                        JOptionPane.INFORMATION_MESSAGE));
-                funcionario.setNit(nit);
 
                 long telefone = Long.parseLong(JOptionPane.showInputDialog(null,
                         "Informe o seu Telefone:", "Cadastro",
@@ -328,16 +350,40 @@ public class InterfaceUsuario {
                     String userReview;
                     userReview = ("Nome: " + funcionario.getNome() + " \n" + "Sobrenome: " +
                             funcionario.getSobrenome() + " \n" +
-                            "Cpf: " + funcionario.getCpf() + "\n" + "NIT: " + funcionario.getNit() + "\n" +
-                            "Empresa: " + funcionario.getEmpresa());
+                            "Cpf: " + funcionario.getCpf() + "\n" + "Empresa: " + funcionario.getEmpresa()+ "\n" + "Telefone: " + funcionario.getTelefone());
                     JOptionPane.showMessageDialog(null, "" + userReview,
                             "Review", JOptionPane.INFORMATION_MESSAGE);
 
                     JOptionPane.showMessageDialog(null,
                             "Funcionário Cadastrado com sucesso!");
 
+
+                    try (Connection conexao = banco.conectar()) {
+                        String sql = "INSERT INTO funcionarios (cpf_funcionario, nome_funcionario, " +
+                                "sobrenome_funcionario, telefone_funcionario, fk_empresa) VALUES (?, ?, ?, " +
+                                "?, ?)";
+                        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+                            stmt.setLong(1, funcionario.getCpf());
+                            stmt.setString(2, funcionario.getNome());
+                            stmt.setString(3, funcionario.getSobrenome());
+                            stmt.setLong(4, funcionario.getTelefone());
+                            stmt.setLong(5, funcionario.getCnpjEmpresa());
+                            stmt.executeUpdate();
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        JOptionPane.showMessageDialog(null,
+                                "Erro ao cadastrar Funcionário: " + e.getMessage(),
+                                "Erro", JOptionPane.ERROR_MESSAGE);
+                    }
+
+
                 }
             }
+
+
+
+
         } else if (opt == 1) {
 
             Empresa empresa = new Empresa();
@@ -371,9 +417,30 @@ public class InterfaceUsuario {
                     "Empresa Cadastrada com sucesso!");
             listaDeEmpresas.add(empresa);
 
+            try (Connection conexao = banco.conectar()) {
+                String sql = "INSERT INTO Empresa (cnpj, nome_empresa, endereco_empresa, telefone_empresa) " +
+                        "VALUES (?, ?, ?, ?)";
+                try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+                    stmt.setLong(1, empresa.getCnpj());
+                    stmt.setString(2, empresa.getNome());
+                    stmt.setString(3, empresa.getEndereco());
+                    stmt.setLong(4, empresa.getTelefone());
+                    stmt.executeUpdate();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Erro ao cadastrar Empresa: " + e.getMessage(),
+                        "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+
         }
 
     }
+
+
+
+
+
     public void cadastroUser (){
         Cliente cliente = new Cliente();
         String nome = JOptionPane.showInputDialog(null,
@@ -407,6 +474,24 @@ public class InterfaceUsuario {
 
         JOptionPane.showMessageDialog(null,
                 "Usuário Cadastrado com sucesso!");
+
+
+        try (Connection conexao = banco.conectar()) {
+            String sql = "INSERT INTO clientes (cpf_cliente, nome_cliente, sobrenome_cliente, " +
+                    "endereco_cliente) " +
+                    "VALUES (?, ?, ?, ?)";
+            try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+                stmt.setLong(1, cliente.getCpf());
+                stmt.setString(2, cliente.getNome());
+                stmt.setString(3, cliente.getEndereco());
+                stmt.setString(4, cliente.getEndereco());
+                stmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar Empresa: " + e.getMessage(),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public void comprar(){
