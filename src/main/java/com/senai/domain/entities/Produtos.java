@@ -1,4 +1,4 @@
-package com.senai;
+package com.senai.domain.entities;
 
 import java.util.logging.Logger;
 
