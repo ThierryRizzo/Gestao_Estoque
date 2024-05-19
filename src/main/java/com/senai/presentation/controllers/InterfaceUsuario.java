@@ -1,19 +1,17 @@
-package com.senai;
+package com.senai.presentation.controllers;
 
-import com.senai.Banco;
-import com.senai.Cliente;
-import com.senai.Empresa;
-import com.senai.Funcionario;
-import com.senai.Produtos;
+import com.senai.domain.entities.Cliente;
+import com.senai.domain.entities.Empresa;
+import com.senai.domain.entities.Funcionario;
+import com.senai.domain.entities.Produtos;
+import com.senai.infraestructure.database.Banco;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class InterfaceUsuario {
 

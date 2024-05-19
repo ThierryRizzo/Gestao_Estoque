@@ -1,4 +1,11 @@
-package com.senai;
+package com.senai.application;
+
+import com.senai.domain.entities.Empresa;
+import com.senai.domain.entities.Produtos;
+import com.senai.infraestructure.database.Banco;
+import com.senai.presentation.controllers.InterfaceUsuario;
+import com.senai.presentation.listeners.PaginaCliente;
+import com.senai.presentation.listeners.PaginaEmpresa;
 
 import javax.swing.*;
 import java.awt.*;

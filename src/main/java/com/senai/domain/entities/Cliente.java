@@ -1,4 +1,6 @@
-package com.senai;
+package com.senai.domain.entities;
+
+import com.senai.domain.Usuarios;
 
 public class Cliente extends Usuarios {
 
